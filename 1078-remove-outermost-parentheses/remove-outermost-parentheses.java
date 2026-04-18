@@ -1,48 +1,21 @@
 class Solution {
-    public String removeOuterParentheses(String name) {
-        Stack<Character> st=new Stack<>();
-           ArrayList<Integer> list = new ArrayList<>();
-           list.add(0);
-           st.push(name.charAt(0));
-           StringBuilder str= new StringBuilder();
-           int i=1;
-           while(i<name.length())
-           {
-               if(!st.isEmpty() && name.charAt(i)!=st.peek())
-               {
+    public String removeOuterParentheses(String s) {
+        StringBuilder result = new StringBuilder(); 
 
-                       char s = st.pop();
-                   if(!st.isEmpty()) {
-                       str.append(s);
-                       str.append(name.charAt(i));
-                   }
-                   if(st.isEmpty())
-                   {
-                       list.add(i);
-                       list.add(i+1);
-                       st.push('(');
-                       i+=2;
-                   }
-                   else {
-                       i++;
-                   }
-               }
+        int level=0;
 
-               else{
-                   st.push(name.charAt(i));
-                   i++;
-               }
+        for ( char ch : s.toCharArray()){
 
-           }
-
-           int j=0;
-           StringBuilder strr= new StringBuilder();
-            while(j < list.size()-1)
-            {
-                String sub=name.substring(list.get(j)+1,list.get(j+1));
-                strr.append(sub);
-                j+=2;
+            if(ch =='('){
+                if(level >0) result.append(ch);
+                level++;
+            } 
+            else if(ch ==')'){
+                level --;
+                if(level >0) result.append(ch);
             }
-       return strr.toString();
+        }
+
+        return result.toString();
     }
 }
