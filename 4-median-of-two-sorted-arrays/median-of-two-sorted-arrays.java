@@ -1,22 +1,31 @@
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-         int m = nums1.length, n = nums2.length;
-        int total = m + n;
+        int m = nums1.length;
+        int n = nums2.length;
 
-        int i = 0, j = 0;
-        int prev = 0, curr = 0;
+        int[] merged = new int[m + n];
+        int i = 0, j = 0, k = 0;
 
-        for (int k = 0; k <= total / 2; k++) {
-            prev = curr;
-
-            if (i < m && (j >= n || nums1[i] < nums2[j])) {
-                curr = nums1[i++];
+        // Merge both arrays
+        while (i < m && j < n) {
+            if (nums1[i] < nums2[j]) {
+                merged[k++] = nums1[i++];
             } else {
-                curr = nums2[j++];
+                merged[k++] = nums2[j++];
             }
         }
 
-        if (total % 2 == 1) return curr;
-        return (prev + curr) / 2.0;
+        // Remaining elements
+        while (i < m) merged[k++] = nums1[i++];
+        while (j < n) merged[k++] = nums2[j++];
+
+        // Find median
+        int total = m + n;
+
+        if (total % 2 == 1) {
+            return merged[total / 2];
+        } else {
+            return (merged[total / 2 - 1] + merged[total / 2]) / 2.0;
+        }
     }
 }
